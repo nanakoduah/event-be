@@ -1,5 +1,4 @@
 const express = require('express');
-const morgan = require('morgan');
 const cors = require('cors');
 
 const autheticate = require('./v1/middlewares/authenticate');
@@ -11,7 +10,6 @@ const categoryRoutes = require('./v1/categories/categoryRoutes');
 const userRoutes = require('./v1/users/userRoutes');
 
 const app = express();
-app.use(morgan('dev'));
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'development') {
