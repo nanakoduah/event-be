@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const AppError = require('../../errors/AppError');
 const catchAsync = require('../../errors/catchAsync');
 
