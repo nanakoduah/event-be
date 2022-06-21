@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 
+const autheticate = require('./v1/middlewares/authenticate');
 const globalErrorHandle = require('./errors/errorController');
 const AppError = require('./errors/AppError');
 const authRoutes = require('./v1/auth/authRoutes');
@@ -16,6 +17,8 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
   app.use(cors());
 }
+
+app.use(autheticate);
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/events', eventRoutes);
