@@ -44,8 +44,12 @@ exports.getOne = (Model, { modelName }) =>
 
 exports.create = (Model, { modelName }) =>
   catchAsync(async function (req, res) {
-    const { body } = req;
-    const response = await Model.create({ ...body });
+    const { body, currentUser } = req;
+
+    const response = await Model.create({
+      ...body,
+      createdBy: currentUser._id,
+    });
 
     res.status(201).json({
       status: 'success',
