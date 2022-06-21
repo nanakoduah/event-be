@@ -2,39 +2,43 @@ const Event = require('./EventModel');
 const factory = require('../../utils/factory');
 const catchAsync = require('../../errors/catchAsync');
 
-const fetchSubscribedCategory = catchAsync(async function (req, res) {
+const fetchSubscribedCategory = async function (req) {
   if (!req.currentUser || req.currentUser.subscriptions.length === 0) {
     return [];
   }
 
   const { subscriptions } = req.currentUser;
-
   const response = await Event.find({
     category: {
       $in: subscriptions,
     },
+    date: { $gt: new Date() },
   });
 
-  return res.status(201).json({
-    status: 'success',
-    results: response.length,
-    data: { subscriptions: response },
-    pagination: {
-      page,
-      limit,
-      totalRecords: await Event.countDocuments(),
-    },
-  });
-});
+  return response;
+};
 
-const fetchAllEvents = factory.getAll(Event, { modelName: 'event' });
+const fetchAllEvents = async function (req) {
+  const response = await Event.find({
+    date: { $gt: new Date() },
+  });
+
+  return response;
+};
 
 exports.getAll = async function (req, res, next) {
-  if (req.currentUser && req.currentUser.subscriptions.length > 0) {
-    return fetchSubscribedCategory(req, res, next);
-  }
-
-  return fetchAllEvents(req, res, next);
+  Promise.all([fetchSubscribedCategory(req), fetchAllEvents(req)])
+    .then((response) => {
+      const [subscribedEvents, allEvents] = response;
+      res.status(200).json({
+        results: 2,
+        data: {
+          subscribedEvents,
+          allEvents,
+        },
+      });
+    })
+    .catch((err) => next(err));
 };
 
 exports.getOne = factory.getOne(Event, { modelName: 'event' });
