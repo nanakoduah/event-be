@@ -1,6 +1,7 @@
 const AppError = require('../../errors/AppError');
 const catchAsync = require('../../errors/catchAsync');
 const User = require('../users/UserModel');
+const jwt = require('jsonwebtoken');
 
 exports.signup = catchAsync(async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -33,13 +34,24 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
+  const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+
+  const token = jwt.sign(
+    { id: user._id, iat: Date.now(), sub: user.email },
+    JWT_SECRET,
+    {
+      expiresIn: JWT_EXPIRES_IN,
+    }
+  );
+
   return res.status(201).json({
     status: 'success',
     data: {
       user: {
-        email: user.email,
+        email,
         name: user.name,
       },
+      token,
     },
   });
 });
