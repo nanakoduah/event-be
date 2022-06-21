@@ -3,7 +3,7 @@ const catchAsync = require('../errors/catchAsync');
 const QueryHelper = require('./QueryHelper');
 
 exports.getAll = (Model, { modelName }) =>
-  catchAsync(async function (req, res, next) {
+  catchAsync(async function (req, res) {
     const { page = 1, limit = 50 } = req.query;
     const queryHelper = new QueryHelper(Model.find(), req.query)
       .filter()
@@ -43,9 +43,8 @@ exports.getOne = (Model, { modelName }) =>
   });
 
 exports.create = (Model, { modelName }) =>
-  catchAsync(async function (req, res, next) {
+  catchAsync(async function (req, res) {
     const { body } = req;
-
     const response = await Model.create({ ...body });
 
     res.status(201).json({
