@@ -3,8 +3,12 @@ const catchAsync = require('../../errors/catchAsync');
 const User = require('../users/UserModel');
 const jwt = require('jsonwebtoken');
 
-exports.signup = catchAsync(async (req, res) => {
+exports.signup = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
+
+  if (!email || !name || !password || !confirmPassword) {
+    return next(new AppError('All fields are required', 400));
+  }
 
   const user = await User.create({
     email,
@@ -50,6 +54,7 @@ exports.login = catchAsync(async (req, res, next) => {
       user: {
         email,
         name: user.name,
+        subscriptions: user.subscriptions,
       },
       token,
     },

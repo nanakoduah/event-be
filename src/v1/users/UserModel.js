@@ -4,25 +4,21 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: [true, 'email is required.'],
     unique: true,
     trim: true,
     lowercase: true,
   },
   name: {
     type: String,
-    required: [true, 'Name is required.'],
     trim: true,
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
     minLength: 8,
     select: false,
   },
   confirmPassword: {
     type: String,
-    required: [true, 'Confirm password is required'],
     validate: {
       validator: function (value) {
         return this.password === value;
@@ -30,6 +26,10 @@ const userSchema = new mongoose.Schema({
       value: undefined,
       message: 'Password and confirm password mismatch',
     },
+  },
+  subscriptions: {
+    type: Array,
+    default: [],
   },
 });
 
