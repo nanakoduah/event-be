@@ -2,6 +2,7 @@ const AppError = require('../../errors/AppError');
 const catchAsync = require('../../errors/catchAsync');
 const User = require('../users/UserModel');
 const jwt = require('jsonwebtoken');
+const ms = require('ms');
 
 exports.signup = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -49,7 +50,7 @@ exports.login = catchAsync(async (req, res, next) => {
     { id: user._id, iat: Date.now(), sub: user.email },
     JWT_SECRET,
     {
-      expiresIn: JWT_EXPIRES_IN,
+      expiresIn: ms(JWT_EXPIRES_IN),
     }
   );
 

@@ -14,7 +14,9 @@ module.exports = catchAsync(async (req, res, next) => {
     return next();
   }
 
-  const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET, {
+    ignoreExpiration: true,
+  });
 
   const user = await User.findById(decode.id);
 
