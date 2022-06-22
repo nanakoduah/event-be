@@ -44,6 +44,14 @@ const eventSchema = new mongoose.Schema({
   },
 });
 
+eventSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'category',
+    select: 'name',
+  });
+  next();
+});
+
 const Event = mongoose.model('Event', eventSchema);
 
 module.exports = Event;
