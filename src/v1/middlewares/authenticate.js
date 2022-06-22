@@ -15,12 +15,14 @@ module.exports = catchAsync(async (req, res, next) => {
   }
 
   const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
   const user = await User.findById(decode.id);
 
   if (!user) {
     return next();
   }
 
+  user.exp = decode.exp;
   req.currentUser = user;
 
   next();

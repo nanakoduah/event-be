@@ -1,6 +1,5 @@
 const Event = require('./EventModel');
 const factory = require('../../utils/factory');
-const catchAsync = require('../../errors/catchAsync');
 
 const fetchSubscribedCategory = async function (req) {
   if (!req.currentUser || req.currentUser.subscriptions.length === 0) {
