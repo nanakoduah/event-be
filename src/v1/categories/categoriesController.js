@@ -33,53 +33,8 @@ exports.getOne = catchAsync(async function (req, res, next) {
   });
 });
 
-exports.onCreate = catchAsync(async function (req, res) {
-  const { body } = req;
-
-  const response = await Category.create({ ...body });
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      category: response,
-    },
-    results: 1,
-  });
-});
-
-exports.onUpdate = catchAsync(async function (req, res, next) {
-  const { params, body } = req;
-  const response = await Category.findByIdAndUpdate(params.id, body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!response) {
-    return next(new AppError('Category does not exist', 404));
-  }
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      category: response,
-    },
-    results: 1,
-  });
-});
-
-exports.onDelete = catchAsync(async function (req, res, next) {
-  const { id } = req.params;
-  const response = await Category.findByIdAndDelete(id);
-
-  if (!response) {
-    return next(new AppError('Category does not exist', 404));
-  }
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      category: response,
-    },
-    results: 1,
-  });
+exports.onCreate = factory.create(Category, { modelName: 'category' });
+exports.onUpdate = factory.update(Category, { modelName: 'category' });
+exports.onDelete = exports.onDelete = factory.delete(Category, {
+  modelName: 'category',
 });

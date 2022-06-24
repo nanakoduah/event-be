@@ -1,5 +1,3 @@
-const { promisify } = require('util');
-
 const User = require('./UserModel');
 const catchAsync = require('../../errors/catchAsync');
 const AppError = require('../../errors/AppError');
