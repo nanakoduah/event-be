@@ -9,7 +9,11 @@ const categorySchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, 'Category description is required'],
+    trim: true,
+  },
+  createdBy: {
+    type: String,
+    required: [true, 'Something went wrong creating category'],
     trim: true,
   },
 });

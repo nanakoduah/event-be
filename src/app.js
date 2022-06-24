@@ -14,13 +14,16 @@ app.use(express.json());
 
 /**
  * @todo
- * Secure aoi with the following
  * -- Rate limiting
  * -- Data sanitization
  * -- HTTP headers
  * --- Parameter pollution
  * -- set limit on request payload
  * -- Send token as httpOnly cookie in prod
+ *
+ * -- compression
+ * -- cache categories
+ * --
  */
 
 if (process.env.NODE_ENV === 'development') {

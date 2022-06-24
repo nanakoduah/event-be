@@ -1,0 +1,4 @@
+exports.USER_TYPES = {
+  ADMIN: 'USER::ADMIN',
+  CUSTOMER: 'USER::CUSTOMER',
+};
