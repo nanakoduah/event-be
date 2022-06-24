@@ -61,6 +61,7 @@ exports.login = catchAsync(async (req, res, next) => {
         email,
         name: user.name,
         subscriptions: user.subscriptions,
+        role: user.userRole,
       },
       token,
     },

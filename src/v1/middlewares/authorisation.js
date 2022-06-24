@@ -1,7 +1,6 @@
 const AppError = require('../../errors/AppError');
-const catchAsync = require('../../errors/catchAsync');
 
-exports.protect = catchAsync(async (req, res, next) => {
+exports.protect = async (req, res, next) => {
   if (!req.currentUser) {
     return next(new AppError('Unauthorised access', 401));
   }
@@ -13,4 +12,21 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   next();
-});
+};
+
+exports.restrictTo =
+  (...userRoles) =>
+  async (req, res, next) => {
+    const { currentUser } = req;
+
+    if (!userRoles.includes(currentUser.userRole)) {
+      return next(
+        new AppError(
+          'You do not have permission to perform this operation',
+          403
+        )
+      );
+    }
+
+    next();
+  };

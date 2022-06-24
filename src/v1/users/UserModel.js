@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  userRole: {
+    type: String,
+    enum: ['USER::ADMIN', 'USER::CLIENT'],
+    default: 'USER::CLIENT',
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -50,6 +55,13 @@ userSchema.methods.isPasswordValid = async function (
   const result = await bcrypt.compare(loginPassword, userPassword);
   return result;
 };
+
+userSchema.set('toJSON', {
+  transform: function (doc, ret, opt) {
+    delete ret['password'];
+    return ret;
+  },
+});
 
 const User = mongoose.model('User', userSchema);
 
