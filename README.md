@@ -12,6 +12,11 @@ replace the content with your environment values
 There are no seeded users and user management is not available in this prototype, it is recommended to use the existing database which has a `System user` with the following credentials.
 - email: `admin@mail.com`
 - password: `11111111`
+On the other hand, if you prefer to create your own database from scratch and use then please follow the instruction below to create a system adminstrator or user
+- sign up with the desired system user email
+- Open you mongodb client.
+- Change `userRole` field from `USER_TYPES.CUSTOMER` to `USER_TYPES.  ADMIN` for this user.
+- And you have a system user with more privileges
 
 The admin account can be used to add new `Categories` for the app
 
